@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <header>
+        <h1>Criador de Galerias 2000</h1>
+    </header>
+    <div class="container">
+        <div class="controls">
+            <h2>Controles</h2>
+            <label for="escolhido">Escolha um quadrado:</label>
+            <input type="number" id="escolhido" min="1" value="1">
+            <br><br>
+            <button id="adicionarButton">Adicionar novo Espaço</button>
+            <br><br>
+            <button id="removerButton">Remover o Espaço Escolhido</button>
+            <br><br>
+            <label for="largura">Largura do Espaço:</label>
+            <input type="number" id="largura" min="100" max="500" value="100">
+            <br><br>
+            <label for="altura">Altura do Espaço:</label>
+            <input type="number" id="altura" min="100" max="500" value="100">
+            <br><br>
+            <label for="distancia">Distância entre os Espaços:</label>
+            <input type="number" id="distancia" min="0" max="100" value="20">
+            <br><br>
+            <label for="texto">Texto do Espaço:</label><br>
+            <input type="text" id="texto" placeholder="Conteúdo escrito:" maxlength="70">
+            <br><br>
+            <label for="opcao">Alterar a cor de:</label>
+            <select id="opcao">
+                <option value="text">Texto</option>
+                <option value="edge">Bordas</option>
+                <option value="background">Background</option>
+            </select>
+            <br>
+            <input type="color" id="cor">
+            <br><br>
+            <label for="fontSizeButton">Alterar o Tamanho da fonte:</label>
+            <br>
+            <input type="range" min="10" max="25" name="font" id="fontSizeButton">
+            <br><br>
+            <div class="text-style-buttons">
+                <button id="boldButton">Negrito</button>
+                <button id="italicButton">Itálico</button>
+                <button id="normalButton">Texto Normal</button>
+            </div>
+            <br><br>
+            <input type="file" id="selectImageId" accept="image/*">
+            <br><br>
+            <button type="button" id="removeImageId">Remover Imagem</button>
+            <br><br>
+            <label for="imagemLargura">Largura da Imagem:</label>
+            <input type="number" id="imagemLargura" min="20" max="500" value="100">
+            <br><br>
+            <label for="imagemAltura">Altura da Imagem:</label>
+            <input type="number" id="imagemAltura" min="20" max="500" value="100">
+            <br><br>
+        </div>
+
+        <div class="divider"></div>
+        
+        <div class="galeria">
+            <h2>Galeria gerada</h2>
+            <div id="espaco">
+                <div class="espaco_conteudo">Exemplo</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Todos os direitos reservados</p>
+    </footer>
+        
+    <script>
+
+        //funcao para inserir uma imagem
+        let imagemElement = null;
+        function uploadImageFunc(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+                    let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+
+                    if (todosEspaco[espacoEscolhido]) {
+                        imagemElement = document.createElement('img');
+                        imagemElement.src = e.target.result;
+                        imagemElement.style.height = 'auto';
+                        imagemElement.style.borderRadius = '2px';
+                        imagemElement.style.paddingBottom = '15px';
+
+                        const currentContent = todosEspaco[espacoEscolhido].innerHTML;
+                        if (currentContent.trim() !== '' && currentContent.trim() !== 'Exemplo') {
+                            let textoExistente = todosEspaco[espacoEscolhido].textContent.trim();
+                            todosEspaco[espacoEscolhido].textContent = '';
+                            todosEspaco[espacoEscolhido].textContent = textoExistente;
+                        }
+
+                        todosEspaco[espacoEscolhido].prepend(imagemElement);
+                    }
+                };
+            }
+        }
+
+        //funcao para alterar o tamanho das imagens
+        function alterarTamanhoImagem() {
+            if (imagemElement) {
+                let larguraImagem = document.querySelector("#imagemLargura").value;
+                let alturaImagem = document.querySelector("#imagemAltura").value;
+                imagemElement.style.width = larguraImagem + 'px';
+                imagemElement.style.height = alturaImagem + 'px';
+            }
+        }
+
+        //funcao para remover imagem
+        function removeImageFunc() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            if (todosEspaco[espacoEscolhido]) {
+                let imagemExistente = todosEspaco[espacoEscolhido].querySelector('img');
+                if (imagemExistente) {
+                    imagemExistente.remove();
+                    imagemElement = null;
+                }
+            }
+        }
+
+        //funcao de alteracao de cores 
+        function alterarCor() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            let opcaoEscolhida = document.querySelector("#opcao").value;
+            const inputCor = document.getElementById('cor');
+
+            if (opcaoEscolhida === "text") {
+                todosEspaco[espacoEscolhido].style.color = inputCor.value;
+            } else if (opcaoEscolhida === "edge") {
+                todosEspaco[espacoEscolhido].style.borderColor = inputCor.value;
+            } else if (opcaoEscolhida === "background") {
+                todosEspaco[espacoEscolhido].style.backgroundColor = inputCor.value;
+            }
+        }
+
+        //funcao que adiciona um espaco
+        function adicionarEspaco() {
+            const espaco = document.querySelector("#espaco");
+            const newCard = document.createElement("div");
+            newCard.classList.add("espaco_conteudo");
+            newCard.textContent = "Exemplo";
+            espaco.appendChild(newCard);
+        }
+
+        //funcao que remove o espaco selecionado pelo primeiro input
+        function removerEspaco() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            if (todosEspaco[espacoEscolhido]) {
+                todosEspaco[espacoEscolhido].remove();
+            }
+        }
+
+        //funcao que altera o tamanho/dimensao dos espacos
+        function alterarTamanhoEspaco() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            let largura = document.querySelector("#largura").value;
+            let altura = document.querySelector("#altura").value;
+
+            if (todosEspaco[espacoEscolhido]) {
+                todosEspaco[espacoEscolhido].style.width = largura + 'px';
+                todosEspaco[espacoEscolhido].style.height = altura + 'px';
+            }
+        }
+
+        //funcao para alterar o texto do espaco e preservar uma possivel imagem
+        function alterarTexto() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            let textoEspaco = document.querySelector("#texto").value;
+
+            if (todosEspaco[espacoEscolhido]) {
+                let imagemExistente = todosEspaco[espacoEscolhido].querySelector('img');
+                if (imagemExistente) {
+                    let imgSrc = imagemExistente.src;
+                    todosEspaco[espacoEscolhido].textContent = textoEspaco;
+                    const cardImageElement = document.createElement('img');
+                    cardImageElement.src = imgSrc;
+                    cardImageElement.style.width = '';
+                    cardImageElement.style.height = 'auto';
+                    cardImageElement.style.borderRadius = '5px';
+                    cardImageElement.style.paddingBottom = '15px';
+                    todosEspaco[espacoEscolhido].prepend(cardImageElement);
+                } else {
+                    todosEspaco[espacoEscolhido].textContent = textoEspaco;
+                }
+            }
+        }
+
+        //funcao para alterar o tamanho das fontes
+        function alterarFonte() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            if (todosEspaco[espacoEscolhido]) {
+                todosEspaco[espacoEscolhido].style.fontSize = document.querySelector("#fontSizeButton").value + "px";
+            }
+        }
+
+
+        //funcoes de alteracao de texto
+
+        //texto para negrito
+        function aplicarNegrito() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            if (todosEspaco[espacoEscolhido]) {
+                todosEspaco[espacoEscolhido].style.fontWeight = 'bold';
+            }
+        }
+
+        //texto para italico
+        function aplicarItalic() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            if (todosEspaco[espacoEscolhido]) {
+                todosEspaco[espacoEscolhido].style.fontStyle = 'italic';
+            }
+        }
+
+        //texto para 'normal'
+        function textoNormal() {
+            let todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            let espacoEscolhido = parseInt(document.querySelector("#escolhido").value) - 1;
+            if (todosEspaco[espacoEscolhido]) {
+                todosEspaco[espacoEscolhido].style.fontWeight = 'normal';
+                todosEspaco[espacoEscolhido].style.fontStyle = 'normal';
+            }
+        }
+        
+        //funcao para ajustar as distancias dos espacos
+        function ajustarDistancia() {
+            const todosEspaco = document.querySelectorAll(".espaco_conteudo");
+            const distancia = document.querySelector("#distancia").value;
+            todosEspaco.forEach((espaco) => {
+                espaco.style.margin = distancia + 'px';
+            });
+        }
+
+        //listeners
+        document.querySelector("#adicionarButton").addEventListener("click", adicionarEspaco);
+        document.querySelector("#removerButton").addEventListener("click", removerEspaco);
+        document.querySelector("#largura").addEventListener("input", alterarTamanhoEspaco);
+        document.querySelector("#altura").addEventListener("input", alterarTamanhoEspaco);
+        document.querySelector("#distancia").addEventListener("input", ajustarDistancia);
+        document.querySelector("#fontSizeButton").addEventListener("input", alterarFonte);
+        document.querySelector("#texto").addEventListener("input", alterarTexto);
+        document.querySelector("#selectImageId").addEventListener("change", uploadImageFunc);
+        document.querySelector("#removeImageId").addEventListener("click", removeImageFunc);
+        document.querySelector("#imagemLargura").addEventListener("input", alterarTamanhoImagem);
+        document.querySelector("#imagemAltura").addEventListener("input", alterarTamanhoImagem);
+        document.querySelector("#cor").addEventListener("input", alterarCor);
+        document.querySelector("#boldButton").addEventListener("click", aplicarNegrito);
+        document.querySelector("#italicButton").addEventListener("click", aplicarItalic);
+        document.querySelector("#normalButton").addEventListener("click", textoNormal);
+    </script>
+</body>
+</html>

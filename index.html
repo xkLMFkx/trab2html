@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Criador de Páginas Customizadas</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="main-flex">
+            <section class="generators-panel">
+                <div class="forms-grid">
+                    <!-- Cabeçalho -->
+                    <form class="generator-section" id="headerForm" autocomplete="off" onsubmit="return false;">
+                        <h2>Cabeçalho</h2>
+                        <label for="headerElementType">Tipo de elemento:</label>
+                        <select id="headerElementType" required>
+                            <option value="text">Texto</option>
+                            <option value="image">Imagem</option>
+                            <option value="banner">Banner</option>
+                        </select>
+                        <div id="headerTextDiv" style="display:none;">
+                            <label for="headerTextInput">Texto do cabeçalho:</label>
+                            <input type="text" id="headerTextInput" maxlength="50" placeholder="Texto do cabeçalho">
+                        </div>
+                        <div id="headerBannerDiv" style="display:none;">
+                            <label for="headerBannerTextInput">Texto do banner:</label>
+                            <input type="text" id="headerBannerTextInput" maxlength="50" placeholder="Texto do banner">
+                        </div>
+                        <div id="headerImageDiv" style="display:none;">
+                            <label for="headerImageInput">Escolha uma imagem:</label>
+                            <input type="file" id="headerImageInput" accept="image/*">
+                        </div>
+                        <label for="headerBgColor">Cor de fundo:</label>
+                        <input type="color" id="headerBgColor" value="#333333">
+                        <label for="headerTextColor">Cor do texto:</label>
+                        <input type="color" id="headerTextColor" value="#ffffff">
+                        <label for="headerBorderColor">Cor da borda:</label>
+                        <input type="color" id="headerBorderColor" value="#ffffff">
+                        <label for="headerWidth">Largura (px):</label>
+                        <input type="number" id="headerWidth" min="50" max="600" value="200" required>
+                        <label for="headerHeight">Altura (px):</label>
+                        <input type="number" id="headerHeight" min="30" max="200" value="60" required>
+                        <label for="headerSpacing">Espaçamento (px):</label>
+                        <input type="number" id="headerSpacing" min="0" max="50" value="10" required>
+                        <div style="margin-top:10px;">
+                            <button type="button" id="addHeaderElement">Adicionar/Atualizar Elemento</button>
+                            <button type="button" id="clearHeaderElements">Limpar Cabeçalho</button>
+                        </div>
+                        <div id="headerFeedback" style="color:#ffeb3b; margin-top:8px;"></div>
+                    </form>
+                    <!-- Menu -->
+                    <form class="generator-section" id="menuForm" autocomplete="off" onsubmit="return false;">
+                        <h2>Menu</h2>
+                        <label for="menuImageInput">Imagem do menu:</label>
+                        <input type="file" id="menuImageInput" accept="image/*">
+                        <label for="menuBgColor">Cor de fundo do menu:</label>
+                        <input type="color" id="menuBgColor" value="#222222">
+                        <label for="menuItemBgColor">Cor de fundo dos itens:</label>
+                        <input type="color" id="menuItemBgColor" value="#444444">
+                        <label for="menuTextColor">Cor do texto:</label>
+                        <input type="color" id="menuTextColor" value="#ffffff">
+                        <label for="menuBorderColor">Cor da borda:</label>
+                        <input type="color" id="menuBorderColor" value="#888888">
+                        <label for="menuFontSize">Tamanho da fonte (px):</label>
+                        <input type="number" id="menuFontSize" min="10" max="32" value="18">
+                        <label for="menuSpacing">Espaçamento entre itens (px):</label>
+                        <input type="number" id="menuSpacing" min="0" max="50" value="16">
+                        <div id="menuItemsArea">
+                            <label>Itens do menu:</label>
+                            <div id="menuItemsList"></div>
+                            <input type="text" id="menuNewItemText" maxlength="30" placeholder="Novo item">
+                            <button type="button" id="addMenuItem">Adicionar Item</button>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <button type="button" id="clearMenu">Limpar Menu</button>
+                        </div>
+                        <div id="menuFeedback" style="color:#ffeb3b; margin-top:8px;"></div>
+                    </form>
+                    <!-- Formulário -->
+                    <form class="generator-section" id="formForm" autocomplete="off" onsubmit="return false;">
+                        <h2>Formulário</h2>
+                        <label for="formTitle">Título do formulário:</label>
+                        <input type="text" id="formTitle" maxlength="40" placeholder="Título">
+                        <label for="formBgColor">Cor de fundo:</label>
+                        <input type="color" id="formBgColor" value="#222222">
+                        <label for="formBorderColor">Cor da borda:</label>
+                        <input type="color" id="formBorderColor" value="#888888">
+                        <div id="formItemsArea">
+                            <label>Itens do formulário:</label>
+                            <div id="formItemsList"></div>
+                            <select id="formNewItemType">
+                                <option value="text">Texto</option>
+                                <option value="email">E-mail</option>
+                                <option value="date">Data</option>
+                                <option value="radio">Radio</option>
+                                <option value="select">Select</option>
+                            </select>
+                            <input type="text" id="formNewItemLabel" maxlength="30" placeholder="Label">
+                            <button type="button" id="addFormItem">Adicionar Item</button>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <button type="button" id="clearForm">Limpar Formulário</button>
+                        </div>
+                        <div id="formFeedback" style="color:#ffeb3b; margin-top:8px;"></div>
+                    </form>
+                    <!-- Galeria -->
+                    <form class="generator-section" id="galleryForm" autocomplete="off" onsubmit="return false;">
+                        <h2>Galeria</h2>
+                        <label for="galleryCardText">Texto do Card:</label>
+                        <input type="text" id="galleryCardText" maxlength="70" placeholder="Texto do card">
+                        <label for="galleryCardImage">Imagem do Card:</label>
+                        <input type="file" id="galleryCardImage" accept="image/*">
+                        <label for="galleryCardBgColor">Cor de fundo do Card:</label>
+                        <input type="color" id="galleryCardBgColor" value="#ffffff">
+                        <label for="galleryCardTextColor">Cor do texto:</label>
+                        <input type="color" id="galleryCardTextColor" value="#000000">
+                        <label for="galleryCardBorderColor">Cor da borda:</label>
+                        <input type="color" id="galleryCardBorderColor" value="#195a82">
+                        <label for="galleryCardFontSize">Tamanho da fonte (px):</label>
+                        <input type="number" id="galleryCardFontSize" min="10" max="25" value="16">
+                        <label for="galleryCardWidth">Largura do Card (px):</label>
+                        <input type="number" id="galleryCardWidth" min="100" max="400" value="180">
+                        <label for="galleryCardHeight">Altura do Card (px):</label>
+                        <input type="number" id="galleryCardHeight" min="100" max="400" value="180">
+                        <label for="galleryCardSpacing">Espaçamento entre Cards (px):</label>
+                        <input type="number" id="galleryCardSpacing" min="0" max="50" value="20">
+                        <div style="margin-top:10px;">
+                            <button type="button" id="addGalleryCard">Adicionar Card</button>
+                            <button type="button" id="clearGallery">Limpar Galeria</button>
+                        </div>
+                        <div id="galleryFeedback" style="color:#ffeb3b; margin-top:8px;"></div>
+                    </form>
+                    <!-- Rodapé -->
+                    <form class="generator-section" id="footerForm" autocomplete="off" onsubmit="return false;">
+                        <h2>Rodapé</h2>
+                        <label for="footerText">Texto do rodapé:</label>
+                        <input type="text" id="footerText" maxlength="80" placeholder="Texto do rodapé">
+                        <label for="footerBgColor">Cor de fundo:</label>
+                        <input type="color" id="footerBgColor" value="#222222">
+                        <label for="footerTextColor">Cor do texto:</label>
+                        <input type="color" id="footerTextColor" value="#ffffff">
+                        <label for="footerFontSize">Tamanho da fonte (px):</label>
+                        <input type="number" id="footerFontSize" min="10" max="32" value="16">
+                        <label for="footerAlign">Alinhamento:</label>
+                        <select id="footerAlign">
+                            <option value="center">Centralizado</option>
+                            <option value="left">Esquerda</option>
+                            <option value="right">Direita</option>
+                        </select>
+                        <div style="margin-top:10px;">
+                            <button type="button" id="clearFooter">Limpar Rodapé</button>
+                        </div>
+                        <div id="footerFeedback" style="color:#ffeb3b; margin-top:8px;"></div>
+                    </form>
+                </div>
+            </section>
+            
+            <div class="previews-area">
+                <div class="preview-block" id="customHeader"></div>
+                <div class="preview-block" id="customMenu"></div>
+                <div class="preview-block" id="customForm"></div>
+                <div class="preview-block" id="customGallery"></div>
+                <div class="preview-block" id="customFooter"></div>
+            </div>
+        </div>
+
+        <div>
+            <button id="showCodeBtn">Mostrar Código da DIV</button>
+            <button id="saveCodeBtn">Salvar Código</button>
+            <button id="loadCodeBtn">Recuperar Código</button>
+            <button id="clearStorageBtn">Limpar LocalStorage</button>
+        </div>
+        <div id="codigoDiv"></div>
+
+        <footer>
+            <p>&copy; 2025 Todos os direitos reservados</p>
+        </footer>
+        <script src="script.js"></script>
+    </body>
+</html>
